@@ -1,4 +1,4 @@
-# TEMAT PROJEKTU
+## TEMAT PROJEKTU
  Klasyfikacja gatunku utworu na podstawie właściwości akustycznych.
 
 ## CEL PROJEKTU
