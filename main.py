@@ -9,6 +9,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn import metrics
 import math
+import pickle
+from pathlib import Path
 
 
 def spectralCentroidFeature(x, sr, draw=False):
@@ -89,26 +91,47 @@ def prepareData(method='mfcc'):
     return x_data, y_data
 
 
-def runTests():
-    methods = ['mfcc', 'fft', 'spectralCentroid']
-    for m in methods:
+def runTests(methods = [], save = False, pickles_filepaths = []):
+    if len(methods) == 0:
+        print('No methods to run!')
+        return
+
+    for i, m in enumerate(methods):
         X, y = prepareData(m)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
-        clf = svm.SVC(kernel='linear')
-        clf.fit(X_train, y_train)
+        if i < len(pickles_filepaths) - 1:
+            p = Path(pickles_filepaths[i])
+            clf = pickle.load(p.open(mode='rb'))
+        else:
+            clf = svm.SVC(kernel='linear')
+            clf.fit(X_train, y_train)
+
+        if save:
+            p = Path(f'pickle_{m}')
+            p.touch(exist_ok=True)
+            opened_file = p.open(mode='wb')
+            pickle.dump(clf, opened_file)
         y_pred = clf.predict(X_test)
         res = metrics.accuracy_score(y_test, y_pred) * 100
         res = "{:.2f}".format(res)
         print(f"SVM Accuracy with {m} feature: {res}%.")
 
+if __name__ == '__main__':
+    methods = ['mfcc', 'fft', 'spectralCentroid']
 
-audio_path = 'dataset/rock/rock.00000.wav'
-x, sr = librosa.load(audio_path)
-sc = spectralCentroidFeature(x, sr, draw=False)
-# print(f'sc = {sc}')
-mfcc = mfccFeature(x, sr, False)
-# print(f'mfcc = {mfcc}')
-fft_val = fftFeature(x, sr, draw=False)
-# print(f'fft_val = {fft_val}')
-runTests()
+    audio_path = 'dataset/rock/rock.00000.wav'
+    x, sr = librosa.load(audio_path)
+    sc = spectralCentroidFeature(x, sr, draw=False)
+    # print(f'sc = {sc}')
+    mfcc = mfccFeature(x, sr, False)
+    # print(f'mfcc = {mfcc}')
+    fft_val = fftFeature(x, sr, draw=False)
+    # print(f'fft_val = {fft_val}')
+
+    # Run clearly
+    # runTests(methods, True)
+    
+    # Run saved pickles
+    pickle_filepaths = [f'pickle_{m}' for m in methods]
+    runTests(methods, False, pickle_filepaths)
