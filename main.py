@@ -13,7 +13,7 @@ import pickle
 from pathlib import Path
 
 
-def spectralCentroidFeature(x, sr, draw=False):
+def spectral_centroid_feature(x, sr, draw=False):
     spectral_centroids = librosa.feature.spectral_centroid(x, sr=sr)[0]
     if draw:
         t = librosa.frames_to_time(range(len(spectral_centroids)))
@@ -29,7 +29,7 @@ def normalize(x, axis=0):
     return sklearn.preprocessing.minmax_scale(x, axis=axis)
 
 
-def mfccFeature(x, sr, draw=False):
+def mfcc_feature(x, sr, draw=False):
     mfccs = librosa.feature.mfcc(x, sr=sr)
     if draw:
         librosa.display.specshow(mfccs, sr=sr, x_axis='time')
@@ -39,7 +39,7 @@ def mfccFeature(x, sr, draw=False):
     return mfccs
 
 
-def fftFeature(x, sr, draw=False):
+def fft_feature(x, sr, draw=False):
     yf = fft(x)
     if draw:
         n = len(x)
@@ -54,7 +54,7 @@ def fftFeature(x, sr, draw=False):
     return yf
 
 
-def prepareData(method='mfcc'):
+def prepare_data(method='mfcc'):
     x_data = []
     y_data = []
 
@@ -64,12 +64,12 @@ def prepareData(method='mfcc'):
 
             x, sr = librosa.load(path)
             if method == 'mfcc':
-                x_val = mfccFeature(x, sr, False)
+                x_val = mfcc_feature(x, sr, False)
                 x_val = x_val.flatten()
                 x_val = x_val.tolist()
                 x_val = x_val[:25800]
             elif method == 'fft':
-                x_val = fftFeature(x, sr, draw=False)
+                x_val = fft_feature(x, sr, draw=False)
                 x_val = x_val.flatten()
                 x_val = x_val.tolist()
                 x_val = x_val[:660000]
@@ -78,7 +78,7 @@ def prepareData(method='mfcc'):
                     C = x_val[i].imag
                     x_val[i] = math.sqrt(R * R + C * C)
             elif method == 'spectralCentroid':
-                x_val = spectralCentroidFeature(x, sr, draw=False)
+                x_val = spectral_centroid_feature(x, sr, draw=False)
                 x_val = x_val.flatten()
                 x_val = x_val.tolist()
                 x_val = x_val[:1290]
@@ -91,27 +91,30 @@ def prepareData(method='mfcc'):
     return x_data, y_data
 
 
-def runTests(methods = [], save = False, pickles_filepaths = []):
+def run_tests(methods = [], save = False, pickles_filepaths = []):
     if len(methods) == 0:
         print('No methods to run!')
         return
 
     for i, m in enumerate(methods):
-        X, y = prepareData(m)
+        X, y = prepare_data(m)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
         if i < len(pickles_filepaths) - 1:
             p = Path(pickles_filepaths[i])
             clf = pickle.load(p.open(mode='rb'))
+            print(f'Use loaded pickle: {p}')
         else:
             clf = svm.SVC(kernel='linear')
             clf.fit(X_train, y_train)
 
         if save:
             p = Path(f'pickle_{m}')
+            print(f'Saving pickle: {p}')
             p.touch(exist_ok=True)
             opened_file = p.open(mode='wb')
             pickle.dump(clf, opened_file)
+
         y_pred = clf.predict(X_test)
         res = metrics.accuracy_score(y_test, y_pred) * 100
         res = "{:.2f}".format(res)
@@ -122,16 +125,16 @@ if __name__ == '__main__':
 
     audio_path = 'dataset/rock/rock.00000.wav'
     x, sr = librosa.load(audio_path)
-    sc = spectralCentroidFeature(x, sr, draw=False)
+    sc = spectral_centroid_feature(x, sr, draw=False)
     # print(f'sc = {sc}')
-    mfcc = mfccFeature(x, sr, False)
+    mfcc = mfcc_feature(x, sr, False)
     # print(f'mfcc = {mfcc}')
-    fft_val = fftFeature(x, sr, draw=False)
+    fft_val = fft_feature(x, sr, draw=False)
     # print(f'fft_val = {fft_val}')
 
     # Run clearly
-    # runTests(methods, True)
-    
+    # run_tests(methods, True)
+
     # Run saved pickles
     pickle_filepaths = [f'pickle_{m}' for m in methods]
-    runTests(methods, False, pickle_filepaths)
+    run_tests(methods, False, pickle_filepaths)
