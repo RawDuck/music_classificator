@@ -1,0 +1,29 @@
+Saving pickle: pickle_mfcc
+------------------------------------------------
+SVM Accuracy with mfcc feature: 66.67%.
+Accuracy for Rock: 75.00%
+Accuracy for Hiphop: 38.46%
+Accuracy for Pop: 83.87%
+Accuracy for Metal: 76.67%
+Elapsed time: 20.50772738456726s
+------------------------------------------------
+Saving pickle: pickle_fft
+------------------------------------------------
+SVM Accuracy with fft feature: 75.76%.
+Accuracy for Rock: 81.25%
+Accuracy for Hiphop: 61.54%
+Accuracy for Pop: 80.65%
+Accuracy for Metal: 83.33%
+Elapsed time: 141.1450138092041s
+------------------------------------------------
+Saving pickle: pickle_spectralCentroid
+------------------------------------------------
+SVM Accuracy with spectralCentroid feature: 36.36%.
+Accuracy for Rock: 43.75%
+Accuracy for Hiphop: 12.82%
+Accuracy for Pop: 32.26%
+Accuracy for Metal: 63.33%
+Elapsed time: 36.52216672897339s
+------------------------------------------------
+
+Process finished with exit code 0
