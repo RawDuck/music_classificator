@@ -1,0 +1,40 @@
+25 000
+------------------------------------------------
+SVM Accuracy with mfcc feature: 66.67%.
+Accuracy for Rock: 75.00%
+Accuracy for Hiphop: 38.46%
+Accuracy for Pop: 83.87%
+Accuracy for Metal: 76.67%
+Elapsed time: 20.927138566970825s
+------------------------------------------------
+
+50 000
+------------------------------------------------
+SVM Accuracy with mfcc feature: 68.94%.
+Accuracy for Rock: 75.00%
+Accuracy for Hiphop: 43.59%
+Accuracy for Pop: 83.87%
+Accuracy for Metal: 80.00%
+Elapsed time: 22.071669101715088s
+------------------------------------------------
+
+100 000
+------------------------------------------------
+SVM Accuracy with mfcc feature: 72.73%.
+Accuracy for Rock: 81.25%
+Accuracy for Hiphop: 48.72%
+Accuracy for Pop: 87.10%
+Accuracy for Metal: 80.00%
+Elapsed time: 23.635908842086792s
+------------------------------------------------
+
+150 000
+------------------------------------------------
+SVM Accuracy with mfcc feature: 71.97%.
+Accuracy for Rock: 78.12%
+Accuracy for Hiphop: 48.72%
+Accuracy for Pop: 87.10%
+Accuracy for Metal: 80.00%
+Elapsed time: 26.4273681640625s
+------------------------------------------------
+
