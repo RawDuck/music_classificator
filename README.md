@@ -1,11 +1,11 @@
-## TEMAT PROJEKTU
- Klasyfikacja gatunku utworu na podstawie właściwości akustycznych.
+## MAIN IDEA
+ Classification of the genre of a song based on its acoustic properties.
 
-## CEL PROJEKTU
+## GOAL
 
-Przygotowanie zbioru uczącego, wyekstrahowanie wybranych właściwości akustycznych. Docelowy program napisany w języku Python będzie przyjmował dowolny utwór w postaci pliku .wav, a następnie zwróci jeden z gatunków muzyki zdefiniowanych przez zbiór uczący. Dodatkowo zostanie przygotowany zbiór testowy, na którego podstawie zostanie określona dokładność klasyfikacji.
+Preparation of the training set, extraction of selected acoustic properties. The target Python program will take any song as a .wav file and then return one of the genres of music defined by the training set. Additionally, a test set will be prepared, on the basis of which the classification accuracy will be determined.
 
-## BADANIA
+## RESEARCH
 
 1. SVM Accuracy with mfcc feature: 72.73%
 
@@ -40,6 +40,3 @@ Elapsed time: 139.31962156295776s
 
 Elapsed time: 23.794891834259033s
 
-## ZESPÓŁ
-1. Łukasz Smalec
-2. Robert Piątek
